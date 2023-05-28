@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Targets {
+  UAP4
+  UAP3
+  UAP2
+  CMS
+  MAGASIN
+}
+
+model Of {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  article      String
+  quantity     Int
+  composant    Int
+  planedAt     DateTime
+  planedFor    DateTime
+  priority     Int
+  comment      String
+  target       Targets
+  quantityDone Int?     @default(0)
+  userId       String
+  actions      Action[]
+}
+
+enum Roles {
+  NONE
+  PLANER
+  UAP2
+  UAP3
+  UAP4
+  CMS
+  MAGASIN
+}
+
+model User {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique
+  role   Roles  @default(NONE)
+}
+
+model Action {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  comment   String
+  quantity  Int
+  ofId      String   @db.ObjectId
+  createdAt DateTime @default(now())
+  of        Of       @relation(fields: [ofId], references: [id], onDelete: Cascade)
+}
