@@ -1,18 +1,14 @@
-import { useRouter } from "next/navigation";
+"use client";
+import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 export const useRole = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await fetch("/api/users", {
-        next: {
-          revalidate: 10,
-        },
-      });
+      const response = await fetch("/api/users");
 
       if (!response.ok) {
         setIsLoading(false);
@@ -21,11 +17,10 @@ export const useRole = () => {
 
       setIsLoading(false);
       setUser(await response.json());
-      router.refresh();
     };
 
     getUser();
-  }, [router]);
+  }, []);
 
   return { user, isLoading };
 };

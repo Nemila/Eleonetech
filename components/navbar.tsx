@@ -1,27 +1,18 @@
-import prisma from "@/lib/prisma";
-import { UserButton, auth } from "@clerk/nextjs";
+"use client";
+
+import { useRole } from "@/lib/useRole";
+import { UserButton } from "@clerk/nextjs";
 import { AppWindow } from "lucide-react";
-import Link from "next/link";
 import { buttonVariants } from "./ui/button";
+import Link from "next/link";
 
-const findUser = async (userId: string | null | undefined) => {
-  if (!userId) return;
-
-  return prisma.user.findUnique({
-    where: {
-      userId,
-    },
-  });
-};
-
-const Navbar = async () => {
-  const { userId } = auth();
-  const user = await findUser(userId);
+const Navbar = () => {
+  const { user } = useRole();
 
   return (
     <section className="border-b">
       <div className="container">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex h-16 items-center justify-between">
           <Link href="/" className={buttonVariants({ variant: "ghost" })}>
             <AppWindow className="mr-2 h-4 w-4" />
             Eleonetech
