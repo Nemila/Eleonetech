@@ -17,7 +17,6 @@ const Navbar = () => {
             <AppWindow className="mr-2 h-4 w-4" />
             Eleonetech
           </Link>
-
           <nav className="flex items-center gap-4">
             <Link
               href="/"
