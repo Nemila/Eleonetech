@@ -1,13 +1,13 @@
 "use client";
 
-import { useRole } from "@/lib/useRole";
+import { useGetUser } from "@/lib/useGetUser";
 import { UserButton } from "@clerk/nextjs";
 import { AppWindow } from "lucide-react";
-import { buttonVariants } from "./ui/button";
 import Link from "next/link";
+import { buttonVariants } from "./ui/button";
 
 const Navbar = () => {
-  const { user } = useRole();
+  const { user } = useGetUser();
 
   return (
     <section className="border-b">
@@ -31,6 +31,15 @@ const Navbar = () => {
             >
               A Propos
             </Link>
+
+            {user && user.role !== "NONE" && (
+              <Link
+                href="/chats"
+                className={buttonVariants({ variant: "ghost", size: "sm" })}
+              >
+                Chats
+              </Link>
+            )}
 
             {user && user.role !== "NONE" && (
               <Link

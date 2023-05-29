@@ -15,7 +15,7 @@ const page = () => {
               l&apos;application.
             </p>
           </div>
-          
+
           <RoleSelection />
         </div>
       </div>

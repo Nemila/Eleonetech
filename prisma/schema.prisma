@@ -58,3 +58,24 @@ model Action {
   createdAt DateTime @default(now())
   of        Of       @relation(fields: [ofId], references: [id], onDelete: Cascade)
 }
+
+model Chat {
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  creatorEmail        String
+  participantEmail    String
+  participantImageUrl String
+  creatorImageUrl     String
+  creatorId           String
+  participantId       String
+  Message             Message[]
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  fromEmail String
+  toEmail   String
+  text      String
+  createdAt DateTime @default(now())
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    String   @db.ObjectId
+}

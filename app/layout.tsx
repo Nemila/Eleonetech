@@ -17,8 +17,8 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="fr" className="dark">
-        <body className={montserrat.className}>
+      <html lang="fr">
+        <body className={`${montserrat.className} flex min-h-screen flex-col`}>
           <Navbar />
           {children}
         </body>

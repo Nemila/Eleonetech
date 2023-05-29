@@ -21,24 +21,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRole } from "@/lib/useRole";
+
+import { useGetUser } from "@/lib/useGetUser";
 
 export const formSchema = z.object({
   role: z.enum(["PLANER", "UAP4", "UAP3", "UAP2", "CMS", "MAGASIN"]),
 });
 
 const RoleSelection = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { user, isLoading: userIsLoading } = useRole();
+  const { user, isLoading: userIsLoading } = useGetUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-
-  const router = useRouter();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -55,11 +55,12 @@ const RoleSelection = () => {
 
     setIsLoading(false);
     router.refresh();
-    return router.push("/");
+    return router.replace("/");
   };
 
   useEffect(() => {
     if (user) {
+      router.refresh();
       return router.push("/");
     }
   }, [router, user]);
@@ -85,12 +86,12 @@ const RoleSelection = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="PLANER">PLANER</SelectItem>
-                  <SelectItem value="UAP4">UAP4</SelectItem>
-                  <SelectItem value="UAP3">UAP3</SelectItem>
-                  <SelectItem value="UAP2">UAP2</SelectItem>
-                  <SelectItem value="CMS">CMS</SelectItem>
-                  <SelectItem value="MAGASIN">MAGASIN</SelectItem>
+                  <SelectItem value="PLANER">Planificateur</SelectItem>
+                  <SelectItem value="UAP4">Responsable UAP4</SelectItem>
+                  <SelectItem value="UAP3">Responsable UAP3</SelectItem>
+                  <SelectItem value="UAP2">Responsable UAP2</SelectItem>
+                  <SelectItem value="CMS">Responsable CMS</SelectItem>
+                  <SelectItem value="MAGASIN">Magasinier</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
