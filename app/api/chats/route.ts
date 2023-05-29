@@ -25,11 +25,28 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const json = await req.json();
 
-  let chats = await prisma.chat.create({
-    data: {
-      ...json,
+  let chat = await prisma.chat.findFirst({
+    where: {
+      OR: [
+        {
+          creatorId: json.creatorId,
+          participantId: json.participantId,
+        },
+        {
+          creatorId: json.participantId,
+          participantId: json.creatorId,
+        },
+      ],
     },
   });
 
-  return new Response(JSON.stringify(chats));
+  if (!chat) {
+    chat = await prisma.chat.create({
+      data: {
+        ...json,
+      },
+    });
+  }
+
+  return new Response(JSON.stringify(chat));
 }

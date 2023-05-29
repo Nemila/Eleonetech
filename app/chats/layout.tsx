@@ -1,7 +1,5 @@
 "use client";
 
-import type { User } from "@clerk/nextjs/dist/types/server";
-import { useEffect, useState } from "react";
 import ChatPanel from "./(chat-panel)/chat-panel";
 
 type Props = {
